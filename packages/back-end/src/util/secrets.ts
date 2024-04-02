@@ -12,7 +12,8 @@ if (fs.existsSync(".env.local")) {
 }
 
 export const LOG_LEVEL = process.env.LOG_LEVEL;
-
+export const LOG_REDACT_PATHS = process.env.LOG_REDACT_PATHS;
+export const LOG_REDACT_PATHS_DELIMITER = process.env.LOG_REDACT_PATHS_DELIMITER;
 export const IS_CLOUD = stringToBoolean(process.env.IS_CLOUD);
 export const IS_MULTI_ORG = stringToBoolean(process.env.IS_MULTI_ORG);
 

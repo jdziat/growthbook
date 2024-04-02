@@ -4,7 +4,7 @@ import { Request } from "express";
 import { BaseLogger, Level } from "pino";
 import { ApiRequestLocals } from "../../types/api";
 import { AuthRequest } from "../types/AuthRequest";
-import { ENVIRONMENT, IS_CLOUD, LOG_LEVEL } from "./secrets";
+import { ENVIRONMENT, IS_CLOUD, LOG_LEVEL,LOG_REDACT_PATHS,LOG_REDACT_PATHS_DELIMITER } from "./secrets";
 
 const redactPaths = [
   "req.headers.authorization",
@@ -32,6 +32,15 @@ if (!IS_CLOUD) {
     'req.headers["cache-control"]',
     "res.headers.etag"
   );
+}
+const additionalRedactLogPathsDelimiter = LOG_REDACT_PATHS_DELIMITER || ','
+const additionalRedactLogPaths = LOG_REDACT_PATHS || ''
+if(additionalRedactLogPaths){
+  if(additionalRedactLogPaths.indexOf(',') !== -1) {
+    redactPaths.push(...additionalRedactLogPaths.split(additionalRedactLogPathsDelimiter))
+  }else{
+    redactPaths.push(additionalRedactLogPaths)
+  }
 }
 
 // Request logging
